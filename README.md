@@ -1,2 +1,2 @@
 # ACDB
-a simple single-user DBMS developed 
+a simple single-user DBMS 
