@@ -55,8 +55,8 @@ int RecordManager::CreateFile(const std::string& table_name, const std::vector<A
 }
 
 int RecordManager::DeleteFile(const std::string& table_name) {
-    
     //TODO
+    
 }
 
 int RecordManager::OpenFile(const std::string& table_name, Table& table) {

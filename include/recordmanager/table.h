@@ -40,9 +40,9 @@ public:
   }
 
   void switch_page(int pageId) {
+    int index;
     if (cur_page != -1) {                                                       
       //换出原来的
-      int index;
       auto page = BufPageManager::instance()->getPage(fileId, cur_page, index);
       memcpy(page, buf, PAGE_SIZE);
       BufPageManager::instance()->markDirty(index);
@@ -78,13 +78,23 @@ public:
     RID rid = find_slot();
     printf("%d %d\n", rid.page_id, rid.slot_id);
     switch_page(rid.page_id);
-    //TODO
-
+    // 添加页首标记
+    int pos = rid.slot_id / 32, bit = rid.slot_id % 32;
+    buf[pos] |= (1 << bit);
+    // 写入数据
+    int addr = th.page_index_len + th.record_len * rid.slot_id;
+    for(int i = 0; i < attrids.size(); ++i) {
+      char* p = (char*)datas[i];
+      memcpy(buf+addr, p, th.attr_size[attrids[i]]);
+    }
   }
 
   RC RemoveRecord(const RID& rid) {
-    //TODO
+    switch_page(rid.page_id);
+    // 去除页首标记
+    int pos = rid.slot_id / 32, bit = rid.slot_id % 32;
+    buf[pos] ^= (1 << bit);
   }
 
-  /TODO
+  //TODO
 };
