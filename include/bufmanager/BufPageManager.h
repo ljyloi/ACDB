@@ -44,6 +44,10 @@ public:
 		return b;
 	}
 public:
+	static BufPageManager* instance() {
+		static BufPageManager bpm;
+		return &bpm;
+	}
 	/*
 	 * @函数名allocPage
 	 * @参数fileID:文件id，数据库程序在运行时，用文件id来区分正在打开的不同的文件
@@ -97,7 +101,7 @@ public:
 		if (index == last) {
 			return;
 		}
-		replace->access(index);
+		replace->access(index);	
 		last = index;
 	}
 	/*
@@ -135,6 +139,13 @@ public:
 		replace->free(index);
 		hash->remove(index);
 	}
+	/**
+	 * @函数名 closeFile
+	 * 功能：释放某个文件的所有关联页面
+	 */
+	void closeFile(int fileId) {
+		//TODO
+	}
 	/*
 	 * @函数名close
 	 * 功能:将所有缓存页面归还给缓存管理器，归还前需要根据脏页标记决定是否写到对应的文件页面中
@@ -157,7 +168,7 @@ public:
 	 * 构造函数
 	 * @参数fm:文件管理器，缓存管理器需要利用文件管理器与磁盘进行交互
 	 */
-	BufPageManager(FileManager* fm) {
+	void init(FileManager* fm) {
 		int c = CAP;
 		int m = MOD;
 		last = -1;

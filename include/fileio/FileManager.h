@@ -33,6 +33,10 @@ private:
 		return 0;
 	}
 public:
+	static FileManager* instance() {
+		static FileManager fm;
+		return &fm;
+	}
 	/*
 	 * FilManager构造函数
 	 */
