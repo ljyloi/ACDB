@@ -1,6 +1,11 @@
 #pragma once
 
+#include <cstring>
+#include <string>
 
+enum CompareOp {
+  com_eq, com_g, com_l, com_ge, com_le
+};
 
 enum AttrType {
   at_int, at_varchar, at_date, at_float
@@ -10,6 +15,8 @@ struct Attr {
   std::string name;
   AttrType type;
   int len;
+
+  Attr(const std::string& _name, const AttrType &_type, const int& _len = 1):name(_name), type(_type), len(_len){}
 
   bool operator ==(const Attr& b) {
     return b.name == name && b.type == type && b.len == len;
